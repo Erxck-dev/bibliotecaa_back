@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Libros disponibles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand">Biblioteca - Usuario</span>
+        <a class="btn btn-danger btn-sm" th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Buscar libros</h2>
+
+
+    <form th:action="@{/usuario/libros/buscar}" method="get" class="row g-3 mb-4">
+        <div class="col-md-8">
+            <input type="text" name="titulo" class="form-control" placeholder="Buscar por título" required>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Buscar</button>
+        </div>
+    </form>
+
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Copias</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="libro : ${libros}">
+                <td th:text="${libro.titulo}"></td>
+                <td th:text="${libro.autor}"></td>
+                <td th:text="${libro.isbn}"></td>
+                <td th:text="${libro.copias}"></td>
+                <td>
+                    <form th:action="@{/usuario/libros/reservar/{id}(id=${libro.id})}" method="post">
+                        <button 
+                            type="submit"
+                            class="btn btn-success btn-sm"
+                            th:disabled="${libro.copias == 0}">
+                            Reservar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

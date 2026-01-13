@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <h1 class="navbar-brand mb-0 fs-1 text-white">LOGIN</h1>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div th:if="${param.exito}">
+                    <div class="alert alert-info">
+                        Se ha registrado exitosamente a la aplicación
+                    </div>
+                </div>
+
+                <h1 class="mb-4">Regístrate</h1>
+
+                <form th:action="@{/registro}" method="post" th:object="${usuario}">
+                    <div class="mb-3">
+                        <label class="form-label" for="nombre">Nombre :</label>
+                        <input id="nombre" type="text" class="form-control" th:field="*{nombre}" required autofocus>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="apellido">Apellido :</label>
+                        <input id="apellido" type="text" class="form-control" th:field="*{apellido}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email :</label>
+                        <input id="email" type="email" class="form-control" th:field="*{email}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password :</label>
+                        <input id="password" type="password" class="form-control" th:field="*{password}" required>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <button type="submit" class="btn btn-primary me-3">Registrar</button>
+                        <span>Si ya tienes cuenta <a th:href="@{/login}">Click aquí para iniciar sesión</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
