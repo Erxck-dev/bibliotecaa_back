@@ -1,15 +1,18 @@
-# Paso 1: Usar Maven para construir el proyecto
+# ETAPA 1: Construcción (Build)
 FROM maven:3.9.6-eclipse-temurin-21-jammy AS build
 WORKDIR /app
+# Copiamos solo el pom primero para descargar librerías (más rápido)
+COPY pom.xml .
+RUN mvn dependency:go-offline
+# Copiamos el resto del código y compilamos
 COPY . .
-# Usamos el 'mvn' del sistema en lugar del './mvnw' que falla
-RUN mvn clean install -DskipTests
+RUN mvn clean package -DskipTests
 
-# Paso 2: Usar una imagen ligera para ejecutar la app
+# ETAPA 2: Ejecución (Runtime)
 FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
-# Copiamos solo el resultado (el .jar) del paso anterior
-COPY --from=build /app/target/biblioteca-Grupo-1-0.0.1-SNAPSHOT.jar app.jar
+# Buscamos cualquier archivo .jar en la carpeta target y lo renombramos a app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
